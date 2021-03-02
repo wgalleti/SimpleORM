@@ -32,6 +32,7 @@ type
     function LastRecord : iSimpleDAO<T>;
     function Delete(aField : String; aValue : String) : iSimpleDAO<T>; overload;
     function DataSource( aDataSource : TDataSource) : iSimpleDAO<T>;
+    function DataChange(aValue : TProc<TObject, TField>) : iSimpleDAO<T>;
     function Find(aBindList : Boolean = True) : iSimpleDAO<T>; overload;
     function Find(var aList : TObjectList<T>) : iSimpleDAO<T> ; overload;
     function Find(aId : Integer) : T; overload;

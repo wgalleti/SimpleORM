@@ -16,7 +16,8 @@ uses
     {$ENDIF}
   {$ENDIF}
   SimpleDAOSQLAttribute,
-  System.Threading;
+  System.Threading,
+  System.SysUtils;
 
 Type
   TSimpleDAO<T: class, constructor> = class(TInterfacedObject, iSimpleDAO<T>)
@@ -24,6 +25,7 @@ Type
       FQuery : iSimpleQuery;
       FDataSource : TDataSource;
       FSQLAttribute : iSimpleDAOSQLAttribute<T>;
+      FDataChange : TProc<TObject, TField>;
       {$IFNDEF CONSOLE}
       FForm : TForm;
       {$ENDIF}
@@ -36,6 +38,7 @@ Type
       destructor Destroy; override;
       class function New(aQuery : iSimpleQuery) : iSimpleDAO<T>; overload;
       function DataSource( aDataSource : TDataSource) : iSimpleDAO<T>;
+      function DataChange(aValue : TProc<TObject, TField>) : iSimpleDAO<T>;
       function Insert(aValue : T) : iSimpleDAO<T>; overload;
       function Update(aValue : T) : iSimpleDAO<T>; overload;
       function Delete(aValue : T) : iSimpleDAO<T>; overload;
@@ -60,7 +63,7 @@ Type
 implementation
 
 uses
-  System.SysUtils, SimpleAttributes, System.TypInfo, SimpleRTTI, SimpleSQL;
+  SimpleAttributes, System.TypInfo, SimpleRTTI, SimpleSQL;
 
 { TGenericDAO }
 
@@ -77,6 +80,13 @@ begin
   FQuery := aQuery;
   FSQLAttribute := TSimpleDAOSQLAttribute<T>.New(Self);
   FList := TObjectList<T>.Create;
+end;
+
+function TSimpleDAO<T>.DataChange(
+  aValue: TProc<TObject, TField>): iSimpleDAO<T>;
+begin
+  Result := Self;
+  FDataChange := aValue;
 end;
 
 function TSimpleDAO<T>.DataSource(aDataSource: TDataSource): iSimpleDAO<T>;
