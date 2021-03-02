@@ -38,6 +38,7 @@ type
     function Find(aId : Integer) : T; overload;
     function Find(aKey : String; aValue : Variant) : iSimpleDAO<T>; overload;
     function SQL : iSimpleDAOSQLAttribute<T>;
+    function Current : T;
     {$IFNDEF CONSOLE}
     function BindForm(aForm : TForm)  : iSimpleDAO<T>;
     {$ENDIF}

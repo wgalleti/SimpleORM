@@ -30,6 +30,7 @@ Type
       FForm : TForm;
       {$ENDIF}
       FList : TObjectList<T>;
+      FCurrentObject : T;
       function FillParameter(aInstance : T) : iSimpleDAO<T>; overload;
       function FillParameter(aInstance : T; aId : Variant) : iSimpleDAO<T>; overload;
       procedure OnDataChange(Sender : TObject; Field : TField);
@@ -44,6 +45,7 @@ Type
       function Delete(aValue : T) : iSimpleDAO<T>; overload;
       function Delete(aField : String; aValue : String) : iSimpleDAO<T>; overload;
       function LastID : iSimpleDAO<T>;
+      function Current : T;
       function LastRecord : iSimpleDAO<T>;
       {$IFNDEF CONSOLE}
       function Insert: iSimpleDAO<T>; overload;
@@ -80,6 +82,16 @@ begin
   FQuery := aQuery;
   FSQLAttribute := TSimpleDAOSQLAttribute<T>.New(Self);
   FList := TObjectList<T>.Create;
+end;
+
+function TSimpleDAO<T>.Current: T;
+begin
+  if Assigned(FCurrentObject) then
+    FCurrentObject.Free;
+
+  FCurrentObject := T.Create;
+  TSimpleRTTI<T>.New(nil).DataSetToEntity(FQuery.DataSet, FCurrentObject);
+  Result := FCurrentObject;
 end;
 
 function TSimpleDAO<T>.DataChange(
