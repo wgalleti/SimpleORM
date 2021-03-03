@@ -151,7 +151,11 @@ uses
   {$ENDIF}
   Variants,
   SimpleRTTIHelper,
-  System.UITypes;
+  System.UITypes,
+  cxTextEdit,
+  cxDBLookupComboBox,
+  cxCalendar,
+  cxCheckBox;
 
 { TSimpleRTTI }
 
@@ -164,8 +168,15 @@ begin
   if aComponent is TEdit then
     (aComponent as TEdit).Text := aValue;
 
+  if aComponent is TcxTextEdit then
+     (aComponent as TcxTextEdit).Text := aValue;
+
+
   if aComponent is TComboBox then
     (aComponent as TComboBox).ItemIndex := (aComponent as TComboBox).Items.IndexOf(aValue);
+
+  if aComponent is TcxLookupComboBox then
+     (aComponent as TcxLookupComboBox).ItemIndex := (aComponent as TcxLookupComboBox).Properties.Items.IndexOf(aValue);
 
   {$IFDEF VCL}
   if aComponent is TRadioGroup then
@@ -178,7 +189,11 @@ begin
   //DateControls
   {$IFDEF VCL}
     if aComponent is TDateTimePicker then
-    (aComponent as TDateTimePicker).Date := aValue;
+      (aComponent as TDateTimePicker).Date := aValue;
+
+    if aComponent is TcxDateEdit then
+      (aComponent as TcxDateEdit).Date := aValue;
+
   {$ENDIF}
   {$IFDEF FMX}
   if aComponent is TDateEdit then
@@ -192,12 +207,12 @@ begin
     (aComponent as TCheckBox).IsChecked := aValue;
   {$ENDIF}
 
+  if aComponent is TcxCheckBox then
+    (aComponent as TcxCheckBox).Checked := aValue;
+
+
   if aComponent is TTrackBar then
     (aComponent as TTrackBar).Position := aValue;
-
-
-
-
 end;
 {$ENDIF}
 
@@ -262,8 +277,14 @@ begin
   if aComponent is TEdit then
     Result := TValue.FromVariant((aComponent as TEdit).Text);
 
+  if aComponent is TcxTextEdit then
+    Result := TValue.FromVariant((aComponent as TcxTextEdit).Text);
+
   if aComponent is TComboBox then
     Result := TValue.FromVariant((aComponent as TComboBox).Items[(aComponent as TComboBox).ItemIndex]);
+
+  if aComponent is TcxLookupComboBox then
+    Result := TValue.FromVariant((aComponent as TcxLookupComboBox).Properties.Items[(aComponent as TcxLookupComboBox).ItemIndex]);
 
   {$IFDEF VCL}
   if aComponent is TRadioGroup then
@@ -277,8 +298,11 @@ begin
   {$IFDEF VCL}
     Result := TValue.FromVariant((aComponent as TCheckBox).Checked);
   {$ELSEIF IFDEF FMX}
-      Result := TValue.FromVariant((aComponent as TCheckBox).IsChecked);
+    Result := TValue.FromVariant((aComponent as TCheckBox).IsChecked);
   {$ENDIF}
+
+  if aComponent is TcxCheckBox then
+    Result := TValue.FromVariant((aComponent as TcxCheckBox).Checked);
 
 
   if aComponent is TTrackBar then
@@ -287,6 +311,9 @@ begin
   {$IFDEF VCL}
   if aComponent is TDateTimePicker then
     Result := TValue.FromVariant((aComponent as TDateTimePicker).DateTime);
+
+  if aComponent is TcxDateEdit then
+    Result := TValue.FromVariant((aComponent as TcxDateEdit).DateTime);
   {$ENDIF}
   {$IFDEF FMX}
   if aComponent is TDateEdit then

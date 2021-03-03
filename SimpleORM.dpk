@@ -45,7 +45,8 @@ requires
   bindcomp,
   RESTComponents,
   dac260,
-  unidac260;
+  unidac260,
+  cxEditorsRS26;
 
 contains
   SimpleAttributes in 'SimpleAttributes.pas',
