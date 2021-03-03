@@ -171,12 +171,17 @@ begin
   if aComponent is TcxTextEdit then
      (aComponent as TcxTextEdit).Text := aValue;
 
+  if aComponent is TcxLookupComboBox then
+     (aComponent as TcxLookupComboBox).ItemIndex := (aComponent as TcxLookupComboBox).Properties.Items.IndexOf(aValue);
 
   if aComponent is TComboBox then
     (aComponent as TComboBox).ItemIndex := (aComponent as TComboBox).Items.IndexOf(aValue);
 
-  if aComponent is TcxLookupComboBox then
-     (aComponent as TcxLookupComboBox).ItemIndex := (aComponent as TcxLookupComboBox).Properties.Items.IndexOf(aValue);
+  if aComponent is TcxDateEdit then
+    (aComponent as TcxDateEdit).Date := aValue;
+
+  if aComponent is TcxCheckBox then
+    (aComponent as TcxCheckBox).Checked := aValue;
 
   {$IFDEF VCL}
   if aComponent is TRadioGroup then
@@ -190,10 +195,6 @@ begin
   {$IFDEF VCL}
     if aComponent is TDateTimePicker then
       (aComponent as TDateTimePicker).Date := aValue;
-
-    if aComponent is TcxDateEdit then
-      (aComponent as TcxDateEdit).Date := aValue;
-
   {$ENDIF}
   {$IFDEF FMX}
   if aComponent is TDateEdit then
@@ -206,10 +207,6 @@ begin
   {$ELSEIF IFDEF FMX}
     (aComponent as TCheckBox).IsChecked := aValue;
   {$ENDIF}
-
-  if aComponent is TcxCheckBox then
-    (aComponent as TcxCheckBox).Checked := aValue;
-
 
   if aComponent is TTrackBar then
     (aComponent as TTrackBar).Position := aValue;
@@ -277,14 +274,17 @@ begin
   if aComponent is TEdit then
     Result := TValue.FromVariant((aComponent as TEdit).Text);
 
-  if aComponent is TcxTextEdit then
-    Result := TValue.FromVariant((aComponent as TcxTextEdit).Text);
-
   if aComponent is TComboBox then
     Result := TValue.FromVariant((aComponent as TComboBox).Items[(aComponent as TComboBox).ItemIndex]);
 
   if aComponent is TcxLookupComboBox then
     Result := TValue.FromVariant((aComponent as TcxLookupComboBox).Properties.Items[(aComponent as TcxLookupComboBox).ItemIndex]);
+
+  if aComponent is TcxDateEdit then
+    Result := TValue.FromVariant((aComponent as TcxDateEdit).Date);
+
+  if aComponent is TcxTextEdit then
+    Result := TValue.FromVariant((aComponent as TcxTextEdit).Text);
 
   {$IFDEF VCL}
   if aComponent is TRadioGroup then
@@ -311,9 +311,6 @@ begin
   {$IFDEF VCL}
   if aComponent is TDateTimePicker then
     Result := TValue.FromVariant((aComponent as TDateTimePicker).DateTime);
-
-  if aComponent is TcxDateEdit then
-    Result := TValue.FromVariant((aComponent as TcxDateEdit).DateTime);
   {$ENDIF}
   {$IFDEF FMX}
   if aComponent is TDateEdit then
